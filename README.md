@@ -1,2 +1,1 @@
-# Metis
-Delta robot
+# Metiss
