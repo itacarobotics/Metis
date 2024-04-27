@@ -460,26 +460,9 @@ class GUI(Node):
     ###################################################################################
     
     def relative_to_assets(self, path):
-        """
-        Generates the absolute path to the assets folder.
-        
-        Parameters:
-            path (str): The path to the asset.
-        
-        Returns:
-            str: The absolute path to the asset.
-        """
         ASSETS_PATH = conf.gui_assets_path
         return str(ASSETS_PATH + path)
     
-
-
-
-
-
-
-
-
 
 
 
