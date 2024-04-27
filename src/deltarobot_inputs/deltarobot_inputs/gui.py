@@ -14,7 +14,6 @@ from deltarobot_interfaces.msg import TrajectoryTask
 from std_msgs.msg import String
 from std_msgs.msg import Bool
 
-from ament_index_python.packages import get_package_share_directory
 from os.path import join
 
 
@@ -464,12 +463,9 @@ class GUI(Node):
     ###################################################################################
     
     def relative_to_assets(self, filename):
-        package_path = get_package_share_directory('deltarobot_inputs')
+        package_path = join(conf.ws_path, "src/deltarobot_inputs")
         package_path = join(package_path, "assets/gui")
-        return join(package_path, filename)
-
-        
-    
+        return join(package_path, filename)   
 
 
 

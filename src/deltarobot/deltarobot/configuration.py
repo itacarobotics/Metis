@@ -2,6 +2,9 @@
 
 import numpy as np
 
+## workspace path
+ws_path = "/home/ostifede02/iTacaRobotics/Metis"
+
 ## pos home
 pos_home = np.array([0, 0, -45])
 

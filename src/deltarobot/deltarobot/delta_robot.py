@@ -2,7 +2,6 @@
 
 import numpy as np
 import pinocchio as pin
-from ament_index_python.packages import get_package_share_directory
 
 from deltarobot.inverse_geometry import InverseGeometry
 from deltarobot.trajectory_generator import TrajectoryGenerator
@@ -33,8 +32,8 @@ class DeltaRobot():
         self.q3 = np.zeros(3)
 
         ## import urdf model
-        # may raise PackageNotFoundError
-        package_path = get_package_share_directory('deltarobot_description')
+        # IMPORTANT! package path should be automatic
+        package_path = join(conf.ws_path, "src/deltarobot_description")
         model_1, data_1 = self.init_robot_model(package_path, urdf_filename="deltarobot_1.urdf")   # chain 1
         model_2, data_2 = self.init_robot_model(package_path, urdf_filename="deltarobot_2.urdf")   # chain 2
         model_3, data_3 = self.init_robot_model(package_path, urdf_filename="deltarobot_3.urdf")   # chain 3
@@ -153,10 +152,6 @@ class DeltaRobot():
     
     def get_robot_state(self):
         return self.robot_state
-
-
-
-
 
 
 
