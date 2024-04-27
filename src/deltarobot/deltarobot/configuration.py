@@ -2,22 +2,6 @@
 
 import numpy as np
 
-
-## absolute paths
-package_path = "/home/ostifede02/ItacaRobotics/Metis/src/deltarobot_description"
-gui_assets_path = "/home/ostifede02/ItacaRobotics/Metis/src/deltarobot_inputs/assets/gui/"
-
-## urdf filenames
-urdf_filename_1 = "deltarobot_1.urdf"   # chain 1
-urdf_filename_2 = "deltarobot_2.urdf"   # chain 2
-urdf_filename_3 = "deltarobot_3.urdf"   # chain 3
-
-## inverse geometry frame IDs
-frame_id_1 = 10   # chain 1
-frame_id_2 = 10   # chain 2
-frame_id_3 = 10   # chain 3
-
-
 ## pos home
 pos_home = np.array([0, 0, -45])
 

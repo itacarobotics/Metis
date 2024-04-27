@@ -13,8 +13,8 @@ gnome-terminal -- bash -c '
     export CMAKE_PREFIX_PATH=/opt/openrobots:$CMAKE_PREFIX_PATH &&
 
     source /opt/ros/humble/setup.bash &&
-    source /home/ostifede02/dr_ws/install/setup.bash &&
+    source /home/ostifede02/ItacaRobotics/Metis/install/setup.bash &&
     
-    cd dr_ws/launch &&
+    cd ItacaRobotics/Metis/launch &&
     ros2 launch deltarobot_app.launch.py; exec bash'
 

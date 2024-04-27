@@ -2,6 +2,7 @@
 
 import numpy as np
 import pinocchio as pin
+from ament_index_python.packages import get_package_share_directory
 
 from deltarobot.inverse_geometry import InverseGeometry
 from deltarobot.trajectory_generator import TrajectoryGenerator
@@ -30,17 +31,19 @@ class DeltaRobot():
         self.q1 = np.zeros(3)
         self.q2 = np.zeros(3)
         self.q3 = np.zeros(3)
-        
+
         ## import urdf model
-        model_1, data_1 = self.init_robot_model(conf.package_path, conf.urdf_filename_1)   # chain 1
-        model_2, data_2 = self.init_robot_model(conf.package_path, conf.urdf_filename_2)   # chain 2
-        model_3, data_3 = self.init_robot_model(conf.package_path, conf.urdf_filename_3)   # chain 3
+        # may raise PackageNotFoundError
+        package_path = get_package_share_directory('deltarobot_description')
+        model_1, data_1 = self.init_robot_model(package_path, urdf_filename="deltarobot_1.urdf")   # chain 1
+        model_2, data_2 = self.init_robot_model(package_path, urdf_filename="deltarobot_2.urdf")   # chain 2
+        model_3, data_3 = self.init_robot_model(package_path, urdf_filename="deltarobot_3.urdf")   # chain 3
 
 
         ## init InverseGeometry
-        self.ig_1 = InverseGeometry(model_1, data_1, conf.frame_id_1)    # chain 1
-        self.ig_2 = InverseGeometry(model_2, data_2, conf.frame_id_2)    # chain 2
-        self.ig_3 = InverseGeometry(model_3, data_3, conf.frame_id_3)    # chain 3
+        self.ig_1 = InverseGeometry(model_1, data_1, frame_id=10)    # chain 1
+        self.ig_2 = InverseGeometry(model_2, data_2, frame_id=10)    # chain 2
+        self.ig_3 = InverseGeometry(model_3, data_3, frame_id=10)    # chain 3
         
         ## init TrajectoryGenerator
         self.tg = TrajectoryGenerator(  
