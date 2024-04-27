@@ -1,0 +1,24 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/ostifede02/dr_ws/install/micro_ros_msgs/local/lib/python3.10/dist-packages",
+        "/home/ostifede02/dr_ws/install/micro_custom_messages/local/lib/python3.10/dist-packages",
+        "/home/ostifede02/dr_ws/install/deltarobot/lib/python3.10/site-packages",
+        "/home/ostifede02/dr_ws/install/deltarobot_interfaces/local/lib/python3.10/dist-packages",
+        "/home/ostifede02/dr_ws/install/deltarobot_description/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages",
+        "/opt/openrobots/lib/python3.10/site-packages",
+        ""
+    ],
+    "python.analysis.extraPaths": [
+        "/home/ostifede02/dr_ws/install/micro_ros_msgs/local/lib/python3.10/dist-packages",
+        "/home/ostifede02/dr_ws/install/micro_custom_messages/local/lib/python3.10/dist-packages",
+        "/home/ostifede02/dr_ws/install/deltarobot/lib/python3.10/site-packages",
+        "/home/ostifede02/dr_ws/install/deltarobot_interfaces/local/lib/python3.10/dist-packages",
+        "/home/ostifede02/dr_ws/install/deltarobot_description/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages",
+        "/opt/openrobots/lib/python3.10/site-packages",
+        ""
+    ]
+}

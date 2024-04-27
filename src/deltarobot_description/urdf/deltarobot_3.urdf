@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<robot name="deltarobot">
+
+    <!-- RAILS -->
+    <link name="rails_link">
+        <visual>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="rails.stl"/>
+            </geometry>
+            <material name="white">
+              <color rgba="1 1 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="rails.stl"/>
+            </geometry>
+        </collision>
+    </link>
+    <!-- RAILS END-->
+
+    <!-- ************************************************************************ -->
+
+    <!-- CARRIAGE 3 -->
+    <link name="carriage_3_link">
+        <visual>
+            <origin xyz="0. 0. 0." rpy="0 0 -2.0943951"/>
+            <geometry>
+                <mesh filename="carriage.stl"/>
+            </geometry>
+            <material name="blue">
+              <color rgba="0 0 1 1"/>
+            </material>
+        </visual>
+    </link>
+
+    <joint name="carriage_3_joint" type="prismatic">
+        <origin xyz="0. 0. 0." rpy="0 0 0"/>
+        <parent link="rails_link"/>
+        <child link="carriage_3_link"/>
+        <axis xyz="0.61237244 -0.35355339 0.70710678"/>
+        <limit lower="0" upper="0" velocity="0" effort="0"/> 
+    </joint>
+    <!-- CARRIAGE 3 END-->
+
+
+    <!-- ROD 3A -->
+    <link name="rod_3a_link_virtual">
+    </link>
+
+    <link name="rod_3a_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="link.stl"/>
+            </geometry>
+            <material name="blue">
+              <color rgba="0 0 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0. 0. 0."/>
+            <geometry>
+                <mesh filename="link.stl"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="rod_3a_x_joint" type="revolute">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="carriage_3_link"/>
+        <child link="rod_3a_link_virtual"/>
+        <axis xyz="-0.5 -0.8660254 0"/>
+        <limit lower="0" upper="0" velocity="0" effort="0"/> 
+    </joint>
+
+    <joint name="rod_3a_y_joint" type="revolute">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="rod_3a_link_virtual"/>
+        <child link="rod_3a_link"/>
+        <axis xyz="0.8660254 -0.5 0"/>
+        <limit lower="0" upper="0" velocity="0" effort="0"/> 
+    </joint>
+    <!-- ROD 3A END-->
+
+
+    <!-- ROD 3 END EFFECTOR -->
+    <link name="rod_3_end_effector_link">
+    </link>
+
+    <joint name="rod_3_end_effector_joint" type="fixed">
+        <origin xyz="0 0 -400"/>
+        <parent link="rod_3a_link"/>
+        <child link="rod_3_end_effector_link"/>
+    </joint>
+    <!-- ROD 3 END EFFECTOR END -->
+
+    <!-- ************************************************************************ -->
+
+</robot>

@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<robot name="deltarobot">
+
+    <!-- RAILS -->
+    <link name="rails_link">
+        <visual>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="rails.stl"/>
+            </geometry>
+            <material name="white">
+              <color rgba="1 1 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="rails.stl"/>
+            </geometry>
+        </collision>
+    </link>
+    <!-- RAILS END-->
+
+    <!-- ************************************************************************ -->
+
+    <!-- CARRIAGE 1 -->
+    <link name="carriage_1_link">
+        <visual>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="carriage.stl"/>
+            </geometry>
+            <material name="red">
+              <color rgba="1 0 0 1"/>
+            </material>
+        </visual>
+    </link>
+
+    <joint name="carriage_1_joint" type="prismatic">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="rails_link"/>
+        <child link="carriage_1_link"/>
+        <axis xyz="0 1 1"/>
+        <limit lower="0" upper="0" velocity="0" effort="0"/> 
+    </joint>
+    <!-- CARRIAGE 1 END-->
+
+
+    <!-- ROD 1A -->
+    <link name="rod_1a_link_virtual">
+    </link>
+
+    <link name="rod_1a_link">
+        <visual>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="link.stl"/>
+            </geometry>
+            <material name="red">
+              <color rgba="1 0 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="link.stl"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="rod_1a_x_joint" type="revolute">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="carriage_1_link"/>
+        <child link="rod_1a_link_virtual"/>
+        <axis xyz="1 0 0"/>
+        <limit lower="0" upper="0" velocity="0" effort="0"/> 
+    </joint>
+
+    <joint name="rod_1a_y_joint" type="revolute">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="rod_1a_link_virtual"/>
+        <child link="rod_1a_link"/>
+        <axis xyz="0 1 0"/>
+        <limit lower="0" upper="0" velocity="0" effort="0"/> 
+    </joint>
+    <!-- ROD 1A END-->
+
+    <!-- ROD 1 END EFFECTOR -->
+    <link name="rod_1_end_effector_link">
+    </link>
+
+    <joint name="rod_1_end_effector_joint" type="fixed">
+        <origin xyz="0 0 -400"/>
+        <parent link="rod_1a_link"/>
+        <child link="rod_1_end_effector_link"/>
+    </joint>
+    <!-- ROD 1 END EFFECTOR END -->
+
+</robot>

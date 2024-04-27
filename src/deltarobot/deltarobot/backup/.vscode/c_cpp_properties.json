@@ -1,0 +1,27 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/ostifede02/dr_ws/install/micro_ros_agent/include/**",
+        "/home/ostifede02/dr_ws/install/micro_ros_msgs/include/**",
+        "/home/ostifede02/dr_ws/install/micro_custom_messages/include/**",
+        "/home/ostifede02/dr_ws/install/deltarobot_interfaces/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/ostifede02/dr_ws/src/deltarobot_interfaces/include/**",
+        "/home/ostifede02/dr_ws/src/firmware_esp32/extra_packages/micro_custom_messages/include/**",
+        "/home/ostifede02/dr_ws/src/uros/micro-ROS-Agent/micro_ros_agent/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}
