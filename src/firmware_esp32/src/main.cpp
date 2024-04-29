@@ -67,13 +67,13 @@ void setup()
 
     /********************************************************************************************************************
      *
-     *                            robot_cmds/move/joint_trajectory subscriber
+     *                            robot_actions/move/joint_trajectory subscriber
      *
      ********************************************************************************************************************/
-    rcl_subscription_t robot_cmds__move__joint_trajectory__sub;
-    RCCHECK(rclc_subscription_init_default( &robot_cmds__move__joint_trajectory__sub, &node,
+    rcl_subscription_t robot_actions__move__joint_trajectory__sub;
+    RCCHECK(rclc_subscription_init_default( &robot_actions__move__joint_trajectory__sub, &node,
                                             ROSIDL_GET_MSG_TYPE_SUPPORT(micro_custom_messages, msg, JointTrajectoryArray),
-                                            "robot_cmds/move/joint_trajectory"));
+                                            "robot_actions/move/joint_trajectory"));
 
     // allocate message memory
     micro_custom_messages__msg__JointTrajectoryArray via_points_array_msg;  // allocate message memory
@@ -85,51 +85,51 @@ void setup()
 
     // add subscription to topic
     RCCHECK(rclc_executor_add_subscription( &executor, 
-                                            &robot_cmds__move__joint_trajectory__sub, 
+                                            &robot_actions__move__joint_trajectory__sub, 
                                             &via_points_array_msg,
-                                            &robot_cmds__move__joint_trajectory__callback, 
+                                            &robot_actions__move__joint_trajectory__callback, 
                                             ON_NEW_DATA));
 
 
     /********************************************************************************************************************
     *
-    *                                    robot_cmds/homing SUBSCRIBER
+    *                                    robot_actions/homing SUBSCRIBER
     *
     ********************************************************************************************************************/
-    rcl_subscription_t robot_cmds__homing__sub;
-    RCCHECK(rclc_subscription_init_default( &robot_cmds__homing__sub, &node,
+    rcl_subscription_t robot_actions__homing__sub;
+    RCCHECK(rclc_subscription_init_default( &robot_actions__homing__sub, &node,
                                             ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Bool), 
-                                            "robot_cmds/homing"));
+                                            "robot_actions/homing"));
 
     // allocate message memory
-    std_msgs__msg__Bool robot_cmds__homing__msg;
+    std_msgs__msg__Bool robot_actions__homing__msg;
 
     // add subscription to topic
     RCCHECK(rclc_executor_add_subscription( &executor, 
-                                            &robot_cmds__homing__sub, 
-                                            &robot_cmds__homing__msg,
-                                            &robot_cmds__homing__callback, ON_NEW_DATA));
+                                            &robot_actions__homing__sub, 
+                                            &robot_actions__homing__msg,
+                                            &robot_actions__homing__callback, ON_NEW_DATA));
 
 
     /********************************************************************************************************************
     *
-    *                                    robot_cmds/gripper/em SUBSCRIBER
+    *                                    robot_actions/gripper/em SUBSCRIBER
     *
     ********************************************************************************************************************/
-    rcl_subscription_t robot_cmds__gripper__em__sub;
-    RCCHECK(rclc_subscription_init_default( &robot_cmds__gripper__em__sub, 
+    rcl_subscription_t robot_actions__gripper__em__sub;
+    RCCHECK(rclc_subscription_init_default( &robot_actions__gripper__em__sub, 
                                             &node,
                                             ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Bool), 
-                                            "robot_cmds/gripper/em"));
+                                            "robot_actions/gripper/em"));
 
     // allocate message memory
-    std_msgs__msg__Bool robot_cmds__gripper__em__msg;
+    std_msgs__msg__Bool robot_actions__gripper__em__msg;
 
     // add subscription to topic
     RCCHECK(rclc_executor_add_subscription( &executor, 
-                                            &robot_cmds__gripper__em__sub, 
-                                            &robot_cmds__gripper__em__msg,
-                                            &robot_cmds__gripper__em__callback, 
+                                            &robot_actions__gripper__em__sub, 
+                                            &robot_actions__gripper__em__msg,
+                                            &robot_actions__gripper__em__callback, 
                                             ON_NEW_DATA));
 
 
@@ -148,9 +148,9 @@ void setup()
     rclc_executor_spin(&executor);  // loop*
 
     // destroy nodes
-    RCCHECK(rcl_subscription_fini(&robot_cmds__move__joint_trajectory__sub, &node));
-    RCCHECK(rcl_subscription_fini(&robot_cmds__homing__sub, &node));
-    RCCHECK(rcl_subscription_fini(&robot_cmds__gripper__em__sub, &node));
+    RCCHECK(rcl_subscription_fini(&robot_actions__move__joint_trajectory__sub, &node));
+    RCCHECK(rcl_subscription_fini(&robot_actions__homing__sub, &node));
+    RCCHECK(rcl_subscription_fini(&robot_actions__gripper__em__sub, &node));
     RCCHECK(rcl_node_fini(&node));
     return;
 }

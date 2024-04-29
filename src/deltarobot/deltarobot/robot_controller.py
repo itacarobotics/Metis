@@ -27,19 +27,19 @@ class RobotController(Node):
         #**********************************************************#
         
         ## publish robot commands
-        self.robot_cmds__move__joint_trajectory__pub = self.create_publisher(
+        self.robot_actions__move__joint_trajectory__pub = self.create_publisher(
             JointTrajectoryArray,
-            'robot_cmds/move/joint_trajectory',
+            'robot_actions/move/joint_trajectory',
             1)
         
-        self.robot_cmds__gripper__em__pub = self.create_publisher(
+        self.robot_actions__gripper__em__pub = self.create_publisher(
             Bool,
-            'robot_cmds/gripper/em',
+            'robot_actions/gripper/em',
             1)
         
-        self.robot_cmds__homing__pub = self.create_publisher(
+        self.robot_actions__homing__pub = self.create_publisher(
             Bool,
-            'robot_cmds/homing',
+            'robot_actions/homing',
             1)
         
         ## publish robot state
@@ -53,23 +53,23 @@ class RobotController(Node):
         #                     define subscribers                   #
         #**********************************************************#
 
-        ## subscribe to /input_cmds
-        self.input_cmds__move__task_space__ptp__sub = self.create_subscription(
+        ## subscribe to /robot_cmds
+        self.robot_cmds__move__task_space__ptp__sub = self.create_subscription(
             TrajectoryTask,
-            'input_cmds/move/task_space/ptp',
-            self.input_cmds__move__task_space__ptp__callback,
+            'robot_cmds/move/task_space/ptp',
+            self.robot_cmds__move__task_space__ptp__callback,
             1)
         
-        self.input_cmds__gripper__em__sub = self.create_subscription(
+        self.robot_cmds__gripper__em__sub = self.create_subscription(
             Bool,
-            'input_cmds/gripper/em',
-            self.input_cmds__gripper__em__callback,
+            'robot_cmds/gripper/em',
+            self.robot_cmds__gripper__em__callback,
             1)
         
-        self.input_cmds__homing__sub = self.create_subscription(
+        self.robot_cmds__homing__sub = self.create_subscription(
             Bool,
-            'input_cmds/homing',
-            self.input_cmds__homing__callback,
+            'robot_cmds/homing',
+            self.robot_cmds__homing__callback,
             1)
 
         ## subscribe to /robot_state topic
@@ -99,7 +99,7 @@ class RobotController(Node):
     #                                                                                 #
     ###################################################################################
 
-    def input_cmds__move__task_space__ptp__callback(self, msg_in):
+    def robot_cmds__move__task_space__ptp__callback(self, msg_in):
         
         ## unpack msg
         pos_end = np.empty(3)
@@ -118,17 +118,17 @@ class RobotController(Node):
             return
 
         ## publish message
-        self.robot_cmds__move__joint_trajectory__publish(joint_trajectory)
+        self.robot_actions__move__joint_trajectory__publish(joint_trajectory)
         self.update_robot_state(conf.ROBOT_STATE_RUN)
         return
     
-    def input_cmds__gripper__em__callback(self, msg):
-        self.robot_cmds__gripper__em__pub.publish(msg)
+    def robot_cmds__gripper__em__callback(self, msg):
+        self.robot_actions__gripper__em__pub.publish(msg)
         self.update_robot_state(conf.ROBOT_STATE_RUN)        
         return
     
-    def input_cmds__homing__callback(self, msg):
-        self.robot_cmds__homing__pub.publish(msg)
+    def robot_cmds__homing__callback(self, msg):
+        self.robot_actions__homing__pub.publish(msg)
         self.robot.update_robot_position(conf.pos_home)
         self.update_robot_state(conf.ROBOT_STATE_RUN)
         return
@@ -166,10 +166,10 @@ class RobotController(Node):
     #                                                                                 #
     ###################################################################################
 
-    def robot_cmds__move__joint_trajectory_viz__publish(self, np_array):
+    def robot_actions__move__joint_trajectory_viz__publish(self, np_array):
         return
 
-    def robot_cmds__move__joint_trajectory__publish(self, joint_trajectory):
+    def robot_actions__move__joint_trajectory__publish(self, joint_trajectory):
         msg_out = JointTrajectoryArray()
         msg_out.array_size = len(joint_trajectory)
 
@@ -185,7 +185,7 @@ class RobotController(Node):
             msg_out.via_points.append(joint_via_point_msg)
 
         ## publish joint trajectory
-        self.robot_cmds__move__joint_trajectory__pub.publish(msg_out)
+        self.robot_actions__move__joint_trajectory__pub.publish(msg_out)
         return
     
     def robot_state__publish(self, state):

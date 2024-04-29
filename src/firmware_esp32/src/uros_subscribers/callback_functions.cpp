@@ -2,7 +2,7 @@
 
 MotorDriver mdriver;
 
-void robot_cmds__move__joint_trajectory__callback(const void* msgin)
+void robot_actions__move__joint_trajectory__callback(const void* msgin)
 {
     // unpack message trajectory
     micro_custom_messages__msg__JointTrajectoryArray* via_points_array_msg =
@@ -49,7 +49,7 @@ void robot_cmds__move__joint_trajectory__callback(const void* msgin)
     return;
 }
 
-void robot_cmds__homing__callback(const void* msgin)
+void robot_actions__homing__callback(const void* msgin)
 {
     std_msgs__msg__Bool* task_homing_msg = (std_msgs__msg__Bool*)msgin;
 
@@ -69,7 +69,7 @@ void robot_cmds__homing__callback(const void* msgin)
     RCCHECK(rcl_publish(&feedback__task_ack__pub, &task_ack_msg, NULL));
 }
 
-void robot_cmds__gripper__em__callback(const void* msgin)
+void robot_actions__gripper__em__callback(const void* msgin)
 {
     std_msgs__msg__Bool* msg = (std_msgs__msg__Bool*)msgin;
 

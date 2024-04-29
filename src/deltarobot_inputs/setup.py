@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             "pnp_node = deltarobot_inputs.pick_n_place:main",
+            "task_scheduler_node = deltarobot_inputs.task_scheduler:main",
             "gui_node = deltarobot_inputs.gui:main",
             "gamepad_controller_node = deltarobot_inputs.gamepad_controller:main",
         ],

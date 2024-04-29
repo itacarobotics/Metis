@@ -65,8 +65,8 @@ class GUI(Node):
             1)
         
 
-        # Initialize lock to avoid publishing double tasks
-        self.pub_task_lock = False
+# Initialize lock to avoid publishing double tasks
+# self.pub_task_lock = False
 
         return
     
@@ -300,34 +300,34 @@ class GUI(Node):
     ###################################################################################
 
     def start__button_pressed(self):
-        # If there is no lock, it can move
-        if self.pub_task_lock == False:
-            
-            task_type  = str(self.combo_task_type.get())
+# If there is no lock, it can move
+# if self.pub_task_lock == False:
 
-            if task_type == conf.PTP_TASK_SPACE_TRAJECTORY:
-                self.input_cmds__move__task_space__ptp__publish()
-            elif task_type == conf.HOMING:
-                self.input_cmds__homing__publish()
-            elif task_type == conf.GRIPPER_OPEN:
-                self.input_cmds__gripper__em__publish(True)
-            elif task_type == conf.GRIPPER_CLOSED:
-                self.input_cmds__gripper__em__publish(False)
+        task_type  = str(self.combo_task_type.get())
 
-            # set a lock to publish once
-            self.pub_task_lock = True
+        if task_type == conf.PTP_TASK_SPACE_TRAJECTORY:
+            self.input_cmds__move__task_space__ptp__publish()
+        elif task_type == conf.HOMING:
+            self.input_cmds__homing__publish()
+        elif task_type == conf.GRIPPER_OPEN:
+            self.input_cmds__gripper__em__publish(True)
+        elif task_type == conf.GRIPPER_CLOSED:
+            self.input_cmds__gripper__em__publish(False)
 
-        else:
-            # Manage exception
-            self.get_logger().warning("Publishing lock is True!")
+# set a lock to publish once
+# self.pub_task_lock = True
+
+# else:
+#     # Manage exception
+#     self.get_logger().warning("Publishing lock is True!")
 
         return
 
     def stop__button_pressed(self):
 
         self.robot_state__publish(conf.ROBOT_STATE_STOP)
-        # set a lock for publishing new tasks
-        self.pub_task_lock = True
+# set a lock for publishing new tasks
+# self.pub_task_lock = True
         
         self.raise_exception__popup(conf.ROBOT_STATE_STOP)
         return
@@ -466,9 +466,6 @@ class GUI(Node):
         package_path = join(conf.ws_path, "src/deltarobot_inputs")
         package_path = join(package_path, "assets/gui")
         return join(package_path, filename)   
-
-
-
 
 
     def update_display_position_callback(self, task_msg):
