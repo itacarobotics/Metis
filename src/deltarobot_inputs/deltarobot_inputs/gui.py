@@ -83,7 +83,7 @@ class GUI(Node):
         Initializes the graphical user interface.
         """
         # GUI parameters
-        bg_color = "#2B3499"
+        bg_color = "#000000"
         fg_color = "#FFFFFF"
         entry_font = ("Helvetica", 16, "bold")
 
@@ -119,7 +119,7 @@ class GUI(Node):
             image=self.button_stop_img,
             borderwidth=0,
             highlightthickness=0,
-            bg=bg_color,
+            bg="#141414",
             activebackground=bg_color,
             command=lambda: self.stop__button_pressed()
         )
@@ -137,7 +137,7 @@ class GUI(Node):
             image=self.button_start_img,
             borderwidth=0,
             highlightthickness=0,
-            bg=bg_color,
+            bg="#171717",
             activebackground=bg_color,
             command=lambda: self.start__button_pressed()
         )
@@ -158,7 +158,7 @@ class GUI(Node):
         )
         self.entry_x = tk.Entry(
             bd=0,
-            bg=bg_color,
+            bg="#252525",
             fg=fg_color,
             font=entry_font,
             highlightthickness=0,
@@ -180,7 +180,7 @@ class GUI(Node):
         )
         self.entry_y = tk.Entry(
             bd=0,
-            bg=bg_color,
+            bg="#232222",
             fg=fg_color,
             font=entry_font,
             highlightthickness=0,
@@ -202,7 +202,7 @@ class GUI(Node):
         )
         self.entry_z = tk.Entry(
             bd=0,
-            bg=bg_color,
+            bg="#212020",
             fg=fg_color,
             font=entry_font,
             highlightthickness=0
@@ -224,7 +224,7 @@ class GUI(Node):
         )
         self.entry_time = tk.Entry(
             bd=0,
-            bg=bg_color,
+            bg="#1D1D1D",
             fg=fg_color,
             font=entry_font,
             highlightthickness=0
@@ -252,8 +252,8 @@ class GUI(Node):
                                             {'configure':
                                             {"anchor": "se",
                                             "relief": "flat",
-                                            'selectbackground': bg_color,
-                                            'fieldbackground': bg_color,
+                                            'selectbackground': "#1B1B1B",
+                                            'fieldbackground': "#1B1B1B",
                                             "foreground": fg_color,
                                             "arrowcolor": "false",
                                             }}}
@@ -268,19 +268,19 @@ class GUI(Node):
         
         self.combo_task_type = ttk.Combobox(self.window, 
             values=options,
-            background=bg_color,
+            background="#1B1B1B",
             foreground=fg_color,
             state="readonly"
         )
 
         self.combo_task_type.configure(
-            background=bg_color,
+            background="#1B1B1B",
             foreground=fg_color,
             font=entry_font
         )
         self.combo_task_type.place(
             x= 190,
-            y= 577,
+            y= 579,
             width= 350,
             height= 45
         )
