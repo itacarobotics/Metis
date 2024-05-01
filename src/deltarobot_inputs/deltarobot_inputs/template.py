@@ -18,6 +18,8 @@ from rclpy.node import Node
 
 from deltarobot_interfaces.msg import TrajectoryTask
 from std_msgs.msg import Bool
+from std_msgs.msg import Int32
+
 
 
 class Template_(Node):
@@ -50,13 +52,27 @@ class Template_(Node):
         #**********************************************************#
         #                     define subscribers                   #
         #**********************************************************#
-
+        self.task_queue_len__sub = self.create_subscription(
+            Int32,
+            'task_queue_len',
+            self.task_queue_len__callback,
+            1)
         
         #**********************************************************#
         #                     define timers                        #
         #**********************************************************#
 
 
+        return
+
+    ###################################################################################
+    #                                                                                 #
+    #                              CALLBACK FUNCTIONS                                 #
+    #                                                                                 #
+    ###################################################################################
+
+    def task_queue_len__callback(self):
+        
         return
 
 

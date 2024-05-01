@@ -114,7 +114,6 @@ class TaskScheduler(Node):
             return
         
         self.task_queue_list.append(task)
-        # self.new_task_from_queue__publish()
         return
 
     def input_cmds__gripper__em__callback(self, msg):
@@ -125,8 +124,6 @@ class TaskScheduler(Node):
             return
 
         self.task_queue_list.append(task)
-        
-        # self.new_task_from_queue__publish()
         return
     
     def input_cmds__homing__callback(self, msg):
@@ -139,8 +136,6 @@ class TaskScheduler(Node):
         self.task_queue_list.append(task)
         
         self.get_logger().info(f"lock is {self.pub_task_lock} and queue length is {len(self.task_queue_list)}")
-        
-        # self.new_task_from_queue__publish()
         return
 
 
@@ -150,7 +145,6 @@ class TaskScheduler(Node):
     def robot_state__callback(self, msg):
         if msg.data == conf.ROBOT_STATE_IDLE:
             self.pub_task_lock = False
-            # self.new_task_from_queue__publish()
         else:
             self.pub_task_lock = True
 
@@ -164,6 +158,7 @@ class TaskScheduler(Node):
     ###################################################################################
 
     def new_task_from_queue__publish(self):
+        
         if self.pub_task_lock == False and len(self.task_queue_list) != 0:
             self.get_logger().info(f"new message queue length = {len(self.task_queue_list)}")
             ## publish message
