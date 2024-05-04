@@ -24,8 +24,7 @@ class MotorDriver
             MM_PER_STEP = pi*12.22/1600 = 0.023993913891792
 
         */
-        float MM_PER_STEP = 0.023993914F;
-        // float MM_PER_STEP = 0.025000000;
+        float MM_PER_STEP = 0.02519075648F;
         
         float delta_q_remainder_mm[3]   = {0.0, 0.0, 0.0};
         int PIN_STEPPERS_STEP[3]        = {PIN_STEPPER_1_STEP, PIN_STEPPER_2_STEP, PIN_STEPPER_3_STEP};

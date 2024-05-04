@@ -110,18 +110,18 @@ class TaskScheduler(Node):
         task = Task(msg, "input_cmds__move__task_space__ptp")
         
         # do not add same task
-        if len(self.task_queue_list) != 0 and task == self.task_queue_list[-1]:
-            return
-        
+        # if len(self.task_queue_list) != 0 and task == self.task_queue_list[-1]:
+        #     return
+
         self.task_queue_list.append(task)
         return
 
     def input_cmds__gripper__em__callback(self, msg):
         task = Task(msg, "input_cmds__gripper__em")
-        
+
         # do not add same task
-        if len(self.task_queue_list) != 0 and task == self.task_queue_list[-1]:
-            return
+        # if len(self.task_queue_list) != 0 and task == self.task_queue_list[-1]:
+        #     return
 
         self.task_queue_list.append(task)
         return
@@ -158,7 +158,7 @@ class TaskScheduler(Node):
 
     def new_task_from_queue__publish(self):
         
-        if self.pub_task_lock == False and len(self.task_queue_list) != 0:
+        if self.pub_task_lock == False and len(self.task_queue_list) > 0:
             ## publish message
             msg = self.task_queue_list[0].msg
 

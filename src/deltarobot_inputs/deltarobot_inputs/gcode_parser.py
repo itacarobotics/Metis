@@ -81,6 +81,7 @@ class GcodeParser(Node):
 
         # Publish task
         self.input_cmds__move__task_space__ptp__pub.publish(msg)
+        self.get_logger().info(f"move: {x}, {y}, {z}, {t}")
         return    
     
     '''
@@ -90,6 +91,7 @@ class GcodeParser(Node):
         msg = Bool()
         msg.data = status
         self.input_cmds__homing__pub.publish(msg)
+        self.get_logger().info("homing")
         return
 
     '''
@@ -100,6 +102,7 @@ class GcodeParser(Node):
         msg = Bool()
         msg.data = status
         self.input_cmds__gripper__em__pub.publish(msg)
+        self.get_logger().info(f"gripper: {status}")
         return
 
 
@@ -146,16 +149,17 @@ class GcodeParser(Node):
             x = parts[1][1:]
             y = parts[2][1:]
             z = parts[3][1:]
+            t = parts[4][1:]
             # Call the rapid move function
-            self.input_cmds__move__task_space__ptp__publish(x, y, z, -1)  # Assuming the last argument is always -1
+            self.input_cmds__move__task_space__ptp__publish(x, y, z, t)  # Assuming the last argument is always -1
         
         # If it's a G1 command
-        elif gcode_command == "G1":
+        elif gcode_command == "M5":
             # Check if it's turning the gripper on/off
             if "ON" in parts:
-                self.input_cmds__gripper__em__publish(True)
-            elif "OFF" in parts:
                 self.input_cmds__gripper__em__publish(False)
+            elif "OFF" in parts:
+                self.input_cmds__gripper__em__publish(True)
 
         else:
             self.get_logger().error(f"Unknown G-code command: {gcode_command}")
@@ -177,7 +181,7 @@ def main(args=None):
     # parse gcode file
     gcode_parser_node.parse_file(file_path)
     
-    # rclpy.spin_once(gcode_parser_node)
+    rclpy.spin_once(gcode_parser_node)
 
     gcode_parser_node.destroy_node()
     rclpy.shutdown()
