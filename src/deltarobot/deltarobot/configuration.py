@@ -3,7 +3,7 @@
 import numpy as np
 
 ## workspace path
-ws_path = "/home/ostifede02/iTacaRobotics/Metis"
+ws_path = "/home/ostifede02/itacarobotics/Metis"
 
 ## pos home
 pos_home = np.array([0, 0, -45])

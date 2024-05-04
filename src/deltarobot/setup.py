@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             "robot_controller_node = deltarobot.robot_controller:main",
+            "task_scheduler_node = deltarobot.task_scheduler:main"
         ],
     },
 )

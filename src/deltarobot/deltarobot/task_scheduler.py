@@ -135,7 +135,6 @@ class TaskScheduler(Node):
         task = Task(msg, "input_cmds__homing")
         self.task_queue_list.append(task)
         
-        self.get_logger().info(f"lock is {self.pub_task_lock} and queue length is {len(self.task_queue_list)}")
         return
 
 
@@ -160,7 +159,6 @@ class TaskScheduler(Node):
     def new_task_from_queue__publish(self):
         
         if self.pub_task_lock == False and len(self.task_queue_list) != 0:
-            self.get_logger().info(f"new message queue length = {len(self.task_queue_list)}")
             ## publish message
             msg = self.task_queue_list[0].msg
 
