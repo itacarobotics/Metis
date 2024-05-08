@@ -1,7 +1,7 @@
 # vscode .json folder
 .vscode/
 
-# colcon build folders
+# ROS2 colcon build folders
 /build/
 /log/
 /install/
