@@ -95,8 +95,8 @@ class GcodeParser(Node):
         return
 
     '''
-        status = True,  the gripper is closed.
-        status = False, the gripper is open.
+        status = True,  the gripper is open.
+        status = False, the gripper is closed.
     '''
     def input_cmds__gripper__em__publish(self, status):
         msg = Bool()
@@ -156,10 +156,10 @@ class GcodeParser(Node):
         # If it's a G1 command
         elif gcode_command == "M5":
             # Check if it's turning the gripper on/off
-            if "ON" in parts:
-                self.input_cmds__gripper__em__publish(False)
-            elif "OFF" in parts:
+            if parts[1] == "1":     # open
                 self.input_cmds__gripper__em__publish(True)
+            elif parts[1] == "0":   # closed
+                self.input_cmds__gripper__em__publish(False)
 
         else:
             self.get_logger().error(f"Unknown G-code command: {gcode_command}")
