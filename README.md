@@ -1,5 +1,20 @@
 ![image](/assets/logo/metis_logo.png)
 
 
-# Metis
-The Metis project aims to design, manufacture and control a delta robot. It has been designed with off the shelf components and 3D printed parts. The software is ROS2 based, with micro-ROS integration. Further developements have been made to support gcode and object detection for pick and place tasks.
+# About
+Welcome to the Metis project repository! This project is dedicated to the design, manufacture, and control of a delta robot entirely from scratch.
+
+# Key Features
+- **3D Printed Components**
+- **URDF Description**
+- **ROS2 Integration**
+- **Micro-ROS on ESP32**
+- **G-Code Parser**
+
+# Documentation
+A more detailed documentation can be found [here](/docs/). 
+It comprehends:
+- Mechanical components (STEP and STL files)
+- ROS2 Software architecture
+- How to guides for using single tools (trajectory generator, inverse geometry)
+- and much more...
