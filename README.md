@@ -18,3 +18,5 @@ A more detailed documentation can be found [here](/docs/).
     - *inverse geometry*: Numerical inverse geometry, with Gauss-Newton optimization algorithm.
 
 # Gallery
+Check out our YouTube channel! 
+[here](https://www.youtube.com/@itacarobotics-uq2ss/featured)
