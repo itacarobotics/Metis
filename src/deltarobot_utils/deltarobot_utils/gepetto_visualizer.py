@@ -5,6 +5,7 @@ import rclpy
 from rclpy.node import Node
 
 from deltarobot_interfaces.msg import JointTrajectoryArray
+from std_msgs.msg import Bool
 
 from micro_custom_messages.msg import TaskAck
 
@@ -23,6 +24,33 @@ class GepettoVisualizer(Node):
     def __init__(self):
         super().__init__('gepetto_visualizer_node')
        
+        #**********************************************************#
+        #                     define subscribers                   #
+        #**********************************************************#
+
+        ## subscribe to /robot_cmds
+        self.robot_actions__move__joint_trajectory__sub = self.create_subscription(
+            JointTrajectoryArray,
+            'robot_actions/move/joint_trajectory',
+            self.robot_cmds__move__task_space__ptp__callback,
+            1)
+        
+        self.robot_actions__gripper__em__sub = self.create_subscription(
+            Bool,
+            'robot_cmds/gripper/em',
+            self.robot_cmds__gripper__em__callback,
+            1)
+        
+        self.robot_cmds__homing__sub = self.create_subscription(
+            Bool,
+            'robot_cmds/homing',
+            self.robot_cmds__homing__callback,
+            1)
+
+
+
+
+
         self.joint_trajectory_sub = self.create_subscription(
             JointTrajectoryArray,
             'joint_trajectory',

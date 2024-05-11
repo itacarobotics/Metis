@@ -1,23 +1,41 @@
 # How to navigate
-### /deltarobot
-Is the middle-ware, runs ROS2 on the main machine and it has been written in Python.
+### /src/deltarobot
+Middle-ware nodes and classes, runs ROS2 (on laptop)
+- configuration file
+- robot controller (node)
+    - delta robot (class)
+        - inverse geometry (class)
+        - trajectroy generator (class)
+- task scheduler (node)
 
-### /deltarobot_inputs
-Are all high-level nodes to interact with the robot (i.e. GUI, gcode parser, ...).
+### /src/deltarobot_inputs
+High-level nodes to interact with the robot, runs ROS2 (on laptop)
+- graphical user interface (node)
+- gcode parser (node)
+- template (node), for adding new features
 
-### firmware_esp32
-Is the low-level firmware, runs micro-ROS on a ESP32 microcontroller.
+### /src/firmware_esp32
+Low-level firmware, runs 
+[micro-ROS](https://github.com/micro-ROS/micro_ros_platformio) 
+(on ESP32 microcontroller)
+- micro-ROS init
+- callback functions
+- stepper motors driver
 
-### /deltarobot_description
-Is the URDF description.
+### /src/deltarobot_description
+URDF description of the robot
+- complete robot description (for visualizer)
+- single closed chain description (for inverse geometry)
 
-### /deltarobot_utils
+### /src/deltarobot_utils
 Deprecated as last update.
 
-### /micro_ros_setup
-Used to setup the micro-ROS environment.
+### /src/micro_ros_setup
+Used to setup the micro-ROS environment 
+([help](https://github.com/micro-ROS/micro_ros_platformio))
+(on ESP32 microcontroller)
 
-### /uros
-The actual micro-ROS agent.
-
-
+### /src/uros
+The actual micro-ROS agent 
+([help](https://github.com/micro-ROS/micro_ros_platformio))
+(on ESP32 microcontroller)
