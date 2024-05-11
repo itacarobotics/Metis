@@ -16,7 +16,3 @@ A more detailed documentation can be found [here](/docs/).
 - **How to guides for using single tools**
     - *trajectory generator*: Python class to generate velocity and acceleration constrained trajectories.
     - *inverse geometry*: Numerical inverse geometry, with Gauss-Newton optimization algorithm.
-
-# YouTube
-Check out our YouTube channel! 
-[here](https://www.youtube.com/@itacarobotics-uq2ss/featured)
