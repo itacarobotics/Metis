@@ -464,7 +464,7 @@ class GUI(Node):
     
     def relative_to_assets(self, filename):
         package_path = join(conf.ws_path, "src/deltarobot_inputs")
-        package_path = join(package_path, "gui/assets")
+        package_path = join(package_path, "assets/gui")
         return join(package_path, filename)   
 
 
