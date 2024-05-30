@@ -23,6 +23,7 @@ from std_msgs.msg import Int32
 from deltarobot import configuration as conf
 from os.path import join
 
+import time
 
 
 class GcodeParser(Node):
@@ -59,8 +60,7 @@ class GcodeParser(Node):
         
         #**********************************************************#
         #                     define timers                        #
-        #**********************************************************#
-        
+        #**********************************************************#        
 
         return
 
@@ -173,17 +173,19 @@ class GcodeParser(Node):
 def main(args=None):
     rclpy.init(args=args)
 
+    time.sleep(3)
+
     gcode_parser_node = GcodeParser()
 
     # file name
     file_name = "test1.gcode"
-    file_path = join(conf.ws_path, "src/deltarobot_inputs/gcode/assets")
+    file_path = join(conf.ws_path, "src/deltarobot_inputs/assets/gcode")
     file_path = join(file_path, file_name)
     
     # parse gcode file
     gcode_parser_node.parse_file(file_path)
     
-    rclpy.spin_once(gcode_parser_node)
+    rclpy.spin(gcode_parser_node)
 
     gcode_parser_node.destroy_node()
     rclpy.shutdown()
