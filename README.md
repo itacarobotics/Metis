@@ -23,16 +23,16 @@ A more detailed documentation can be found [here](/docs/).
 [![yt_short](https://img.youtube.com/vi/vHWBWt8ITY0/hqdefault.jpg)](https://www.youtube.com/embed/vHWBWt8ITY0)
 
 ### 1. Structure
-![front_view](/assets/gallery/front_view.png)
+<img src="https://github.com/itacarobotics/Metis/blob/main/assets/gallery/front_view.png" width="500" />
 
-![top_view](/assets/gallery/top_view.png)
+<img src="https://github.com/itacarobotics/Metis/blob/main/assets/gallery/top_view.png" width="500" />
 
 ### 2. Traction system
-![motor](/assets/gallery/motor.png)
+<img src="https://github.com/itacarobotics/Metis/blob/main/assets/gallery/motor.png" width="500" />
 
-![carriage](/assets/gallery/carriage.png)
+<img src="https://github.com/itacarobotics/Metis/blob/main/assets/gallery/carriage.png" width="500" />
 
-![belt_tensioning](/assets/gallery/belt_tensioning.png)
+<img src="https://github.com/itacarobotics/Metis/blob/main/assets/gallery/belt_tensioning.png" width="500" />
 
 ### 3. End Effector
-![belt_tensioning](/assets/gallery/end_effector.png)
+<img src="https://github.com/itacarobotics/Metis/blob/main/assets/gallery/end_effector.png" width="500" />
