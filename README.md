@@ -18,7 +18,7 @@ A more detailed documentation can be found [here](/docs/).
 - **inverse geometry**: Numerical inverse geometry, with Gauss-Newton optimization algorithm.
 
 # Gallery
-### Check out the YouTube channel [--> here <--](https://www.youtube.com/channel/UCZBthnqJWC6FefQW3D71Wpg)!
+### Check out the YouTube channel [--> here <--](https://www.youtube.com/channel/UCZBthnqJWC6FefQW3D71Wpg)
 
 [![yt_short](https://img.youtube.com/vi/vHWBWt8ITY0/hqdefault.jpg)](https://www.youtube.com/embed/vHWBWt8ITY0)
 
