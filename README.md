@@ -11,7 +11,7 @@ Welcome to the Metis repository! This project is dedicated to the design, manufa
 - *Micro-ROS on ESP32*
 
 # Documentation
-A more detailed documentation can be found [here](/docs/).
+A more detailed documentation can be found [--> here <--](/docs/).
 <!-- - **Mechanical components**: STEP files and bill-of-materials. -->
 - **Software architecture**: how the project is structured and how to interact with the robot.
 - **trajectory generator**: Python class to generate velocity and acceleration constrained trajectories.
