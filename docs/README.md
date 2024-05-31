@@ -1,9 +1,7 @@
 # Documentation
 
-### Mechanics
+## Mechanics
 All mechanical components have been designed from scratch using computer-aided design (CAD) software, specifically Autodesk Inventor 2024. Additionally, some components have been topological optimized with the software Autodesk Fusion. This process aims to optimize the material layout of mechanical components, reducing mass while increasing stiffness.
-
-![image](/docs/assets/images/deltarobot.png)
 
 <img src="https://github.com/itacarobotics/Metis/blob/main/docs/assets/images/deltarobot.png" width="400" />
 
@@ -23,7 +21,7 @@ While designing an industrial robot, it is essential to define its workspace. Th
 <img src="https://github.com/itacarobotics/Metis/blob/main/docs/assets/plots/workspace.png" width="300" />
 
 
-### Electronics
+## Electronics
 The electronics bridges the gap between the high level control system and the mechanics. The motherboard of the robot communicates to the computer (master) via USB or WIFI and directly controls all sensors, actuators and other peripherals of the robot.
 Given limited time for the development of this project, an open-source motherboard ([MKS-DLC32](https://github.com/makerbase-mks/MKS-DLC32)), developed for desktop engraving machines, has been implemented.
 
@@ -39,7 +37,7 @@ The micro-controller has limited GPIO (General Pourpose Input Output). To solve 
 The motherboard includes several peripheral interfaces essential for the robot's functionality. These peripherals include ports for limit switches and a MOSFET (Metal-Oxide-Semiconductor Field-Effect Transistor). Limit switches are used to set the zero position of the robot, when turned on. The MOSFET is integrated to enable and disable the electromagnetic gripper from the micro-controller.
 
 
-### Software Architecture
+## Software Architecture
 The software of the delta robot is decentralized over two devices, the main computer, which is responsible for the heavier computational tasks and the micro-controller, which is responsible for controlling actuators, reading sensors and other peripherals. Overall the software architecture can be subdivided into three main sections    \item
 
 - High-level interfaces
