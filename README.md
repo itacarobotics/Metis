@@ -12,13 +12,14 @@ Welcome to the Metis repository! This project is dedicated to the design, manufa
 
 # Documentation
 A more detailed documentation can be found [here](/docs/).
-<!-- - **Mechanical components**: STEP files and bill-of-materials. -->
+- **Mechanical components**: how the robot has been designed.
+- **Electronics**: the bridge between the mechanics and the control software.
 - **Software architecture**: how the project is structured and how to interact with the robot.
-- **trajectory generator**: Python class to generate velocity and acceleration constrained trajectories.
-- **inverse geometry**: Numerical inverse geometry, with Gauss-Newton optimization algorithm.
+- **Inverse geometry**: Numerical inverse geometry, with Gauss-Newton optimization algorithm.
+- **Trajectory generator**: Python class to generate velocity and acceleration constrained trajectories.
 
 # Gallery
-### Check out the YouTube channel [--> here <--](https://www.youtube.com/channel/UCZBthnqJWC6FefQW3D71Wpg)
+### Check out the YouTube channel [>> here <<](https://www.youtube.com/channel/UCZBthnqJWC6FefQW3D71Wpg)
 
 [![yt_short](https://img.youtube.com/vi/vHWBWt8ITY0/hqdefault.jpg)](https://www.youtube.com/embed/vHWBWt8ITY0)
 
