@@ -5,6 +5,8 @@ All mechanical components have been designed from scratch using computer-aided d
 
 ![image](/docs/assets/images/deltarobot.png)
 
+<img src="https://github.com/itacarobotics/Metis/blob/main/docs/assets/images/deltarobot.png" width="400" />
+
 ##### Actuation
 Industrial delta robots commonly have a revolute actuation, which enables fast movements at the cost of larger motors, given the mechanical disadvantage of a longer arm. For this project, the actuation is performed with belt-driven prismatic joints. This design choice allows for a more compact and cost-effective drivetrain, maintaining rigidity and precision.
 
@@ -18,14 +20,14 @@ Each prismatic joint features two spherical pins bolted onto a threaded aluminum
 ##### Workspace
 While designing an industrial robot, it is essential to define its workspace. The total working volume that the end-effector can reach is directly influenced by the lengths of the robot's links and the strokes of its joints. To establish the kinematic properties of the robot, a Python script has been created to visualize the workspace of the delta robot.
 
-<img src="https://github.com/itacarobotics/Metis/blob/main/docs/assets/plots/workspace.png" width="500" />
+<img src="https://github.com/itacarobotics/Metis/blob/main/docs/assets/plots/workspace.png" width="300" />
 
 
 ### Electronics
 The electronics bridges the gap between the high level control system and the mechanics. The motherboard of the robot communicates to the computer (master) via USB or WIFI and directly controls all sensors, actuators and other peripherals of the robot.
 Given limited time for the development of this project, an open-source motherboard ([MKS-DLC32](https://github.com/makerbase-mks/MKS-DLC32)), developed for desktop engraving machines, has been implemented.
 
-<img src="https://github.com/itacarobotics/Metis/blob/main/docs/assets/images/electronics_diagram.png" width="500" />
+<img src="https://github.com/itacarobotics/Metis/blob/main/docs/assets/images/electronics_diagram.png"/>
 
 ##### Micro-controller
 The ESP32 micro-controller is a low-power micro-controller. However, given its limited computational power, its main task is just to execute robot commands received by the main computer and directly control the low-level interfaces.
