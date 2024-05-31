@@ -104,7 +104,7 @@ For this project, the optimization problem has been solved with the Gauss-Newton
 $J^\dagger = J(q_i)^T J(q_i) + \lambda I, \quad \lambda \propto 10^{-2}$
 $\Delta q_i = (J^\dagger)^{-1} J(q_i)^T e$
 
-*Where $J^\dagger$ is the regularized pseudo-inverse of the Jacobian, which makes the matrix always invertible and positive.*
+*Where* $J^\dagger$ *is the regularized pseudo-inverse of the Jacobian, which makes the matrix always invertible and positive.*
 
 4. Update the guess:
 $q_{i+1} = q_i + \Delta q_i$
