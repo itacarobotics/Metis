@@ -38,7 +38,7 @@ The motherboard includes several peripheral interfaces essential for the robot's
 
 
 ## Software Architecture
-The software of the delta robot is decentralized over two devices, the main computer, which is responsible for the heavier computational tasks and the micro-controller, which is responsible for controlling actuators, reading sensors and other peripherals. Overall the software architecture can be subdivided into three main sections    \item
+The software of the delta robot is decentralized over two devices, the main computer, which is responsible for the heavier computational tasks and the micro-controller, which is responsible for controlling actuators, reading sensors and other peripherals. Overall the software architecture can be subdivided into three main sections
 
 - High-level interfaces
 - Robot controller middle-ware
