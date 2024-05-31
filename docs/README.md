@@ -78,7 +78,7 @@ The closed form solution is
 $ a_0 = q_0, \quad a_1 = 0, \quad a_2 = 0 $
 $ a_3 =  \frac{10}{{T_f^3}}, \quad a_4 =  -\frac{15}{{T_f^4}}, \quad a_5 =  \frac{6}{{T_f^5}}$
 
-<img src="https://github.com/itacarobotics/Metis/blob/main/docs/plots/time_scaling.png" width="300"/>
+<img src="https://github.com/itacarobotics/Metis/blob/main/docs/assets/plots/time_scaling.png" width="300"/>
 
 The total time of travel $T_f$ is calculated by setting joint's velocity and acceleration constraints.
 Finally, inverse geometry is computed for each via point, resulting a joint trajectory.
