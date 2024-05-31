@@ -47,6 +47,8 @@ The software of the delta robot is decentralized over two devices, the main comp
 #### High-Level Interface
 The high-level interface is composed of all nodes the user can use to interact with the robot. For instance, the graphical user interface (GUI) helps the user control the position of the robot or, open and close the gripper. Another useful method for programming tasks of an industrial robot is the G-Code. It is a language commonly used for CNC machines or 3D printers and it consists of a set of instruction that the robot has to execute. Furthermore, computer vision algorithms can be implemented for an automated pick and place application.
 
+<img src="https://github.com/itacarobotics/Metis/blob/main/docs/assets/images/gui.png" width="200"/>
+
 
 #### Middle-Ware
 The middle-ware robot controller is mainly responsible for handling incoming tasks, managing exceptions and computing trajectory planning and inverse geometry. It is made up of the "task scheduler" and the "robot controller" ROS2 nodes. The first one takes all incoming tasks from the high-level interfaces and add them to a queue. Once the robot is ready, the task scheduler sends a new task from the queue to the robot controller node. This last computes the robot movements needed to accomplish the desired task and sends them to the micro-controller via USB or WIFI.
