@@ -66,17 +66,17 @@ $\theta(s) = X_0 + s \cdot (X_f-X_0), \qquad s \in [0, 1]$
 
 The parameter $s$ is then remapped to a time scaling function in order to better control velocity and its derivatives along the path. The function $s(t)$ is interpolated with a fifth-order polynomial
 
-$ q(t) = a_0 + a_1 \cdot t + a_2 \cdot t^2 + a_3 \cdot t^3 + a_4 \cdot t^4 + a_5 \cdot t^5 \qquad t \in [0, T_f]$
+$q(t) = a_0 + a_1 \cdot t + a_2 \cdot t^2 + a_3 \cdot t^3 + a_4 \cdot t^4 + a_5 \cdot t^5 \qquad t \in [0, T_f]$
 
 In this case, the system of differential equations is
 
-$ q(0) = 0, \quad \dot{q}(0) = 0, \quad \ddot{q}(0) = 0 $
-$ q(T_f) = 1, \quad \dot{q}(T_f) = 0, \quad \ddot{q}(T_f) = 0 $
+$q(0) = 0, \quad \dot{q}(0) = 0, \quad \ddot{q}(0) = 0 $
+$q(T_f) = 1, \quad \dot{q}(T_f) = 0, \quad \ddot{q}(T_f) = 0 $
 
 The closed form solution is
 
-$ a_0 = q_0, \quad a_1 = 0, \quad a_2 = 0 $
-$ a_3 =  \frac{10}{{T_f^3}}, \quad a_4 =  -\frac{15}{{T_f^4}}, \quad a_5 =  \frac{6}{{T_f^5}}$
+$a_0 = q_0, \quad a_1 = 0, \quad a_2 = 0 $
+$a_3 =  \frac{10}{{T_f^3}}, \quad a_4 =  -\frac{15}{{T_f^4}}, \quad a_5 =  \frac{6}{{T_f^5}}$
 
 <img src="https://github.com/itacarobotics/Metis/blob/main/docs/assets/plots/time_scaling.png" width="300"/>
 
