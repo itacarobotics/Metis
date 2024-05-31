@@ -44,8 +44,8 @@ The software of the delta robot is decentralized over two devices, the main comp
 - Robot controller middle-ware
 - Low-level firmware
 
-#### High-Level Interfaces
-The high-level interfaces is composed of all nodes the user can use to interact with the robot. For instance, the graphical user interface (GUI) helps the user control the position of the robot or, open and close the gripper. Another useful method for programming tasks of an industrial robot is the G-Code. It is a language commonly used for CNC machines or 3D printers and it consists of a set of instruction that the robot has to execute. Furthermore, computer vision algorithms can be implemented for an automated pick and place application.
+#### High-Level Interface
+The high-level interface is composed of all nodes the user can use to interact with the robot. For instance, the graphical user interface (GUI) helps the user control the position of the robot or, open and close the gripper. Another useful method for programming tasks of an industrial robot is the G-Code. It is a language commonly used for CNC machines or 3D printers and it consists of a set of instruction that the robot has to execute. Furthermore, computer vision algorithms can be implemented for an automated pick and place application.
 
 
 #### Middle-Ware
@@ -58,7 +58,32 @@ The micro-controller directly controls the stepper motors, the gripper and reads
 ![image](/docs/assets/images/nodes_diagram.png)
 
 
-### Trajectory Planning
+## Trajectory Planning
 
 
-### Inverse Geometry
+## Inverse Geometry
+The inverse geometry involves finding the joint angles that correspond to a desired end-effector position and orientation. 
+The numerical inverse geometry of a delta robot, and many other robot arms, is a non linear optimization problem, which is solved over multiple iterations refining the initial guess for the joint angles, until a solution that minimizes the error between the desired and actual end-effector positions is found.
+Overall, the problem admits a solution if the desired end-effector position is within the workspace of the robot. However, if a solution exists, there might be multiple or even infinite solutions.
+
+In particular, if the problem admits a solution, it can be solved by minimizing the cost function $c(q)$, where, $f(q)$ is the forward geometry function and $p_d$ is the desired end-effector position. The goal is to find $q$ such that $f(q) \approx p_d$.
+
+
+$c(q) = ||p_d - f(q)||$
+For this project, the optimization problem has been solved with the Gauss-Newton algorithm, which starts with an initial guess $q_0$ and iterates as follows:
+
+
+1. Compute the error vector  $e = p_d - f(q_i)$
+2. Linearize the forward geometry function $f(q_i)$ around the current guess $q_i$ to obtain the Jacobian matrix $J(q_i)$.
+3. Compute the step 
+$\Delta q_i$ using the formula: $J^\dagger = J(q_i)^T J(q_i) + \lambda I, \quad \lambda \propto 10^{-2}$
+$\Delta q_i = (J^\dagger)^{-1} J(q_i)^T e$
+
+Where $J^\dagger$ is the regularized pseudo-inverse of the Jacobian, which makes the matrix always invertible and positive.
+
+4. Update the guess:
+$q_{i+1} = q_i + \Delta q_i$
+
+5. Repeat steps 1-4 until convergence criteria are met, such as the error $||e||$ falling below a threshold or the change in $q_i$ falling below a threshold.
+
+The cost function is a non-convex function, which means, it has at least one minimum. However, the algorithm may converge to a local minimum depending on the initial guess and the characteristics of the problem.
