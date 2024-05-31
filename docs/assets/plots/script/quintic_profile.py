@@ -2,10 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Define coefficients of the quintic polynomial equation
-q0 = 64
-qf = 256
+q0 =0
+qf =1
 
-tf = 3
+tf = 4.6
 
 
 a0 = 0

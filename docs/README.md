@@ -59,6 +59,29 @@ The micro-controller directly controls the stepper motors, the gripper and reads
 
 
 ## Trajectory Planning
+For trajectories planned in task space, the path of the end-effector is interpolated with multiple via-points, whose the robot follows along its movement.
+For this project, the path has been linearly interpolated by the function $\theta(s)$, hence the path describes a straight line from $X_0$ to $X_f$
+
+$\theta(s) = X_0 + s \cdot (X_f-X_0), \qquad s \in [0, 1]$
+
+The parameter $s$ is then remapped to a time scaling function in order to better control velocity and its derivatives along the path. The function $s(t)$ is interpolated with a fifth-order polynomial
+
+$ q(t) = a_0 + a_1 \cdot t + a_2 \cdot t^2 + a_3 \cdot t^3 + a_4 \cdot t^4 + a_5 \cdot t^5 \qquad t \in [0, T_f]$
+
+In this case, the system of differential equations is
+
+$ q(0) = 0, \quad \dot{q}(0) = 0, \quad \ddot{q}(0) = 0 $
+$ q(T_f) = 1, \quad \dot{q}(T_f) = 0, \quad \ddot{q}(T_f) = 0 $
+
+The closed form solution is
+
+$ a_0 = q_0, \quad a_1 = 0, \quad a_2 = 0 $
+$ a_3 =  \frac{10}{{T_f^3}}, \quad a_4 =  -\frac{15}{{T_f^4}}, \quad a_5 =  \frac{6}{{T_f^5}}$
+
+<img src="https://github.com/itacarobotics/Metis/blob/main/docs/plots/time_scaling.png" width="300"/>
+
+The total time of travel $T_f$ is calculated by setting joint's velocity and acceleration constraints.
+Finally, inverse geometry is computed for each via point, resulting a joint trajectory.
 
 
 ## Inverse Geometry
@@ -74,12 +97,14 @@ For this project, the optimization problem has been solved with the Gauss-Newton
 
 
 1. Compute the error vector  $e = p_d - f(q_i)$
+
 2. Linearize the forward geometry function $f(q_i)$ around the current guess $q_i$ to obtain the Jacobian matrix $J(q_i)$.
-3. Compute the step 
-$\Delta q_i$ using the formula: $J^\dagger = J(q_i)^T J(q_i) + \lambda I, \quad \lambda \propto 10^{-2}$
+
+3. Compute the step $\Delta q_i$ using the formula: 
+$J^\dagger = J(q_i)^T J(q_i) + \lambda I, \quad \lambda \propto 10^{-2}$
 $\Delta q_i = (J^\dagger)^{-1} J(q_i)^T e$
 
-Where $J^\dagger$ is the regularized pseudo-inverse of the Jacobian, which makes the matrix always invertible and positive.
+*Where $J^\dagger$ is the regularized pseudo-inverse of the Jacobian, which makes the matrix always invertible and positive.*
 
 4. Update the guess:
 $q_{i+1} = q_i + \Delta q_i$
