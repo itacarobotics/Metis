@@ -37,3 +37,8 @@ A more detailed documentation can be found [>>here<<](/docs/).
 
 ### 3. End Effector
 <img src="https://github.com/itacarobotics/Metis/blob/main/assets/gallery/end_effector.png" width="500" />
+
+#  Contact Us
+For more information, please reach out to us:
+- Email: [ostifederico02@gmail.com](mailto:ostifederico02@gmail.com)
+- YouTube: [itaca robotics](https://www.youtube.com/channel/UCZBthnqJWC6FefQW3D71Wpg)
