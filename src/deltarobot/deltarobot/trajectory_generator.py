@@ -22,12 +22,15 @@ class TrajectoryGenerator():
     '''
     def task_space__ptp(self, pos_start, pos_end, T):
         path_length = norm(pos_end - pos_start)
+
+        if path_length == 0:
+            return None
         
         T_best_effort = self.get_best_effort_time(path_length)
         T = max(T_best_effort, T)
 
-        # if T == 0:
-        #     return None
+        if T == 0:
+            return None
 
         # initialize array
         n_via_points = self.get_number_via_points(path_length)

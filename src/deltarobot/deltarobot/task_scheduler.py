@@ -63,25 +63,14 @@ class TaskScheduler(Node):
             1)
 
 
-        ## subscribe to /robot_cmds
-        self.input_cmds__move__task_space__ptp__sub = self.create_subscription(
-            TrajectoryTask,
-            'input_cmds/move/task_space/ptp',
-            self.input_cmds__move__task_space__ptp__callback,
+        ## subscribe to /input_gcode_cmds
+        self.input_gcode_cmds__pub__sub = self.create_subscription(
+            String,
+            'input_gcode_cmds',
+            self.input_gcode_cmds__pub__callback,
             1)
 
-        self.input_cmds__gripper__em__sub = self.create_subscription(
-            Bool,
-            'input_cmds/gripper/em',
-            self.input_cmds__gripper__em__callback,
-            1)
-        
-        self.input_cmds__homing__sub = self.create_subscription(
-            Bool,
-            'input_cmds/homing',
-            self.input_cmds__homing__callback,
-            1)
-        
+
         #**********************************************************#
         #                     define timers                        #
         #**********************************************************#
@@ -89,8 +78,8 @@ class TaskScheduler(Node):
         timer_period = 0.001  # seconds
         self.publish_task_timer = self.create_timer(
             timer_period, 
-            self.timer_callback)
-        
+            self.task_publisher__timer_callback)
+
         # task queue
         self.task_queue_list = []
 
@@ -106,35 +95,14 @@ class TaskScheduler(Node):
     #                                                                                 #
     ###################################################################################
 
-    def input_cmds__move__task_space__ptp__callback(self, msg):
-        task = Task(msg, "input_cmds__move__task_space__ptp")
-        
-        # do not add same task
-        # if len(self.task_queue_list) != 0 and task == self.task_queue_list[-1]:
-        #     return
+    def input_gcode_cmds__pub__callback(self, msg):
+        if msg.data == "G28":   # cmd is homing
+            # remove lock
+            self.pub_task_lock = False
+            # clear queue list
+            self.task_queue_list.clear()
 
-        self.task_queue_list.append(task)
-        return
-
-    def input_cmds__gripper__em__callback(self, msg):
-        task = Task(msg, "input_cmds__gripper__em")
-
-        # do not add same task
-        # if len(self.task_queue_list) != 0 and task == self.task_queue_list[-1]:
-        #     return
-
-        self.task_queue_list.append(task)
-        return
-    
-    def input_cmds__homing__callback(self, msg):
-        # remove lock
-        self.pub_task_lock = False
-        # clear queue list
-        self.task_queue_list.clear()
-
-        task = Task(msg, "input_cmds__homing")
-        self.task_queue_list.append(task)
-
+        self.task_queue_list.append(msg.data)
         return
 
 
@@ -156,40 +124,67 @@ class TaskScheduler(Node):
     #                                                                                 #
     ###################################################################################
 
-    def new_task_from_queue__publish(self):
+    def robot_cmds__move__task_space__ptp__publish(self, task):
+        msg = TrajectoryTask()
+
+        task_parts = task.split()
+
+        # Assign the extracted values
+        msg.pos_end.x   = float(task_parts[1][1:])
+        msg.pos_end.y   = float(task_parts[2][1:])
+        msg.pos_end.z   = float(task_parts[3][1:])
+        msg.time_total  = float(task_parts[4][1:])
+
+        # publish msg
+        self.robot_cmds__move__task_space__ptp__pub.publish(msg)
+        return
+    
+
+    def robot_cmds__gripper__em__publish(self, data_in):
+        msg = Bool()
+        msg.data = data_in
         
+        self.robot_cmds__gripper__em__pub.publish(msg)
+        return
+    
+
+    def robot_cmds__homing__publish(self):
+        msg = Bool()
+        msg.data = True
+        self.robot_cmds__homing__pub.publish(msg)       
+        return
+
+
+    ###################################################################################
+    #                                                                                 #
+    #                              CALLBACK FUNCTIONS                                 #
+    #                                                                                 #
+    ###################################################################################
+
+    def task_publisher__timer_callback(self):
+        # check if robot is ready to handle new task
         if self.pub_task_lock == False and len(self.task_queue_list) > 0:
             ## publish message
-            msg = self.task_queue_list[0].msg
+            task = self.task_queue_list[0]
+            cmd_type = task[0:3]
 
-            if self.task_queue_list[0].task_type == "input_cmds__move__task_space__ptp":
-                self.robot_cmds__move__task_space__ptp__pub.publish(msg)
-
-            elif self.task_queue_list[0].task_type == "input_cmds__gripper__em":
-                self.robot_cmds__gripper__em__pub.publish(msg)
-
-            elif self.task_queue_list[0].task_type == "input_cmds__homing":
-                self.robot_cmds__homing__pub.publish(msg)
-
+            if cmd_type == "G01":
+                self.robot_cmds__move__task_space__ptp__publish(task)
+            elif cmd_type == "G28":
+                self.robot_cmds__homing__publish()
+            elif cmd_type == "M05":
+                self.robot_cmds__gripper__em__publish(True)
+            elif cmd_type == "M03":
+                self.robot_cmds__gripper__em__publish(False)
+            else:
+                self.get_logger().error(f"{task}: INVALID CMD!")
+            
             # remove task from list
             self.task_queue_list.pop(0)
-            # update new list length
-            self.task_queue_len__publish(len(self.task_queue_list))
-            
+
             # avoid new tasks beeing published
             self.pub_task_lock = True
 
-        return
-
-
-    def task_queue_len__publish(self, len):
-        msg = Int32()
-        msg.data = len
-        self.task_queue_len__pub.publish(msg)
-        return
-
-    def timer_callback(self):
-        self.new_task_from_queue__publish()
         return
 
 

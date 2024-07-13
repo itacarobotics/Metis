@@ -12,7 +12,7 @@ import numpy as np
 
 def main():
     # Load the image
-    image = cv2.imread('assets/tests/image2.png')
+    image = cv2.imread('assets/tests/image1.png')
 
     # Convert the image to grayscale
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -23,6 +23,7 @@ def main():
     # Detect markers
     corners, ids, rejectedImgPoints = cv2.aruco.detectMarkers(gray, aruco_dict)
 
+    print(ids)
 
 
     # Draw detected markers
@@ -31,11 +32,14 @@ def main():
         pts1 = np.empty((4,2))
         for id in ids:
             id = id[0]
+            print(f"id: {id}")
             x = corners[id][0][0][0]
             y = corners[id][0][0][1]
             pts1[id,:] = np.float32([x,y])
 
-        pts1 = order_points(pts1)
+        # pts1 = order_points(pts1)
+        pts1 = np.float32([pts1[3], pts1[2], pts1[1], pts1[0]])
+        print(pts1)
         pts2 = np.float32([[0,0],[297,0],[0,210],[297,210]])*6
 
         M = cv2.getPerspectiveTransform(pts1,pts2)
@@ -87,15 +91,18 @@ def detect_and_mark_washers(image):
     # Perform edge detection
     edges = cv2.Canny(blurred, 50, 150)
 
+    # return edges
+
     # Find contours in the edge-detected image
     contours, _ = cv2.findContours(edges.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
     # Filter contours based on area
     min_area = 10000  # adjust as needed
-    max_area = 30000  # adjust as needed
+    max_area = 100000  # adjust as needed
     washers = []
     for contour in contours:
         area = cv2.contourArea(contour)
+        print(area)
         if min_area < area < max_area:
             perimeter = cv2.arcLength(contour, True)
             circularity = 4 * np.pi * area / (perimeter * perimeter)

@@ -10,9 +10,9 @@ import threading
 
 from deltarobot import configuration as conf
 
-from deltarobot_interfaces.msg import TrajectoryTask
+# from deltarobot_interfaces.msg import TrajectoryTask
 from std_msgs.msg import String
-from std_msgs.msg import Bool
+# from std_msgs.msg import Bool
 
 from os.path import join
 
@@ -29,21 +29,11 @@ class GUI(Node):
         #**********************************************************#
         #                     define publishers                    #
         #**********************************************************#
-        
+
         # publish input commands
-        self.input_cmds__move__task_space__ptp__pub = self.create_publisher(
-            TrajectoryTask,
-            'input_cmds/move/task_space/ptp',
-            1)
-        
-        self.input_cmds__gripper__em__pub = self.create_publisher(
-            Bool,
-            'input_cmds/gripper/em',
-            1)
-        
-        self.input_cmds__homing__pub = self.create_publisher(
-            Bool,
-            'input_cmds/homing',
+        self.input_gcode_cmds__pub = self.create_publisher(
+            String,
+            'input_gcode_cmds',
             1)
         
         ## publish robot state
@@ -65,8 +55,8 @@ class GUI(Node):
             1)
         
 
-# Initialize lock to avoid publishing double tasks
-# self.pub_task_lock = False
+        # Initialize lock to avoid publishing double tasks
+        self.pub_task_lock = False
 
         return
     
@@ -300,8 +290,8 @@ class GUI(Node):
     ###################################################################################
 
     def start__button_pressed(self):
-# If there is no lock, it can move
-# if self.pub_task_lock == False:
+        # # If there is no lock, it can move
+        # if self.pub_task_lock == False:
 
         task_type  = str(self.combo_task_type.get())
 
@@ -310,25 +300,25 @@ class GUI(Node):
         elif task_type == conf.HOMING:
             self.input_cmds__homing__publish()
         elif task_type == conf.GRIPPER_OPEN:
-            self.input_cmds__gripper__em__publish(True)
+            self.input_cmds__gripper__em__publish("OPEN")
         elif task_type == conf.GRIPPER_CLOSED:
-            self.input_cmds__gripper__em__publish(False)
+            self.input_cmds__gripper__em__publish("CLOSED")
 
-# set a lock to publish once
-# self.pub_task_lock = True
+        # set a lock to publish once
+        self.pub_task_lock = True
 
-# else:
-#     # Manage exception
-#     self.get_logger().warning("Publishing lock is True!")
+        # else:
+        #     # Manage exception
+        #     self.get_logger().warning("Publishing lock is True!")
 
         return
 
     def stop__button_pressed(self):
 
         self.robot_state__publish(conf.ROBOT_STATE_STOP)
-# set a lock for publishing new tasks
-# self.pub_task_lock = True
-        
+        # set a lock for publishing new tasks
+        self.pub_task_lock = True
+                
         self.raise_exception__popup(conf.ROBOT_STATE_STOP)
         return
 
@@ -432,27 +422,40 @@ class GUI(Node):
         return
 
     def input_cmds__move__task_space__ptp__publish(self):
-        msg = TrajectoryTask()
+        msg = String()
 
-        msg.pos_end.x       = float(self.entry_x.get())
-        msg.pos_end.y       = float(self.entry_y.get())
-        msg.pos_end.z       = float(self.entry_z.get())
-        msg.time_total      = float(self.entry_time.get())
+        x = float(self.entry_x.get())
+        y = float(self.entry_y.get())
+        z = float(self.entry_z.get())
+        t = float(self.entry_time.get())
 
+        msg.data = f"G01 X{x} Y{y} Z{z} T{t}"          
+        
         # Publish task
-        self.input_cmds__move__task_space__ptp__pub.publish(msg)
+        self.input_gcode_cmds__pub.publish(msg)
         return    
     
     def input_cmds__homing__publish(self):
-        msg = Bool()
-        msg.data = True
-        self.input_cmds__homing__pub.publish(msg)
+        msg = String()
+        msg.data = "G28"
+
+        self.update_display_task_homing()
+        
+        # Publish task
+        self.input_gcode_cmds__pub.publish(msg)
         return
 
     def input_cmds__gripper__em__publish(self, status):
-        msg = Bool()
-        msg.data = status
-        self.input_cmds__gripper__em__pub.publish(msg)
+        msg = String()
+
+        if status == "CLOSED":
+            msg.data = "M03"    # gripper open is current on
+        elif status == "OPEN":
+            msg.data = "M05"    # gripper open is current off
+        else:
+            self.get_logger().error("COMMAND NOT RECOGNIZED!")
+
+        self.input_gcode_cmds__pub.publish(msg)
         return
 
 
@@ -486,29 +489,19 @@ class GUI(Node):
 
         return
     
-    def task_homing(self):
-        pos_current = conf.pos_home     ## after home calibration
-
-        homing_msg = Bool()
-        homing_msg.data = True
-        self.homing_pub.publish(homing_msg)
-
-        # set a lock for publishing new tasks
-        self.pub_task_lock = True
-
-        ## update gui
+    def update_display_task_homing(self):
         # display x
-        x = round(pos_current[0], 3)
+        x = round(conf.pos_home[0], 3)
         self.entry_x.delete(0, tk.END)
         self.entry_x.insert(0, str(x))
 
         # display y
-        y = round(pos_current[1], 3)
+        y = round(conf.pos_home[1], 3)
         self.entry_y.delete(0, tk.END)
         self.entry_y.insert(0, str(y))
 
         # display z
-        z = round(pos_current[2], 3)
+        z = round(conf.pos_home[2], 3)
         self.entry_z.delete(0, tk.END)
         self.entry_z.insert(0, str(z))
         return

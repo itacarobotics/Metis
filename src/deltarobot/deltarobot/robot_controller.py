@@ -27,19 +27,19 @@ class RobotController(Node):
         #**********************************************************#
         
         ## publish robot commands
-        self.robot_actions__move__joint_trajectory__pub = self.create_publisher(
+        self.ll_robot_cmds__move__joint_trajectory__pub = self.create_publisher(
             JointTrajectoryArray,
-            'robot_actions/move/joint_trajectory',
+            'll_robot_cmds/move/joint_trajectory',
             1)
         
-        self.robot_actions__gripper__em__pub = self.create_publisher(
+        self.ll_robot_cmds__gripper__em__pub = self.create_publisher(
             Bool,
-            'robot_actions/gripper/em',
+            'll_robot_cmds/gripper/em',
             1)
         
-        self.robot_actions__homing__pub = self.create_publisher(
+        self.ll_robot_cmds__homing__pub = self.create_publisher(
             Bool,
-            'robot_actions/homing',
+            'll_robot_cmds/homing',
             1)
         
         ## publish robot state
@@ -118,17 +118,17 @@ class RobotController(Node):
             return
 
         ## publish message
-        self.robot_actions__move__joint_trajectory__publish(joint_trajectory)
+        self.ll_robot_cmds__move__joint_trajectory__publish(joint_trajectory)
         self.update_robot_state(conf.ROBOT_STATE_RUN)
         return
     
     def robot_cmds__gripper__em__callback(self, msg):
-        self.robot_actions__gripper__em__pub.publish(msg)
+        self.ll_robot_cmds__gripper__em__pub.publish(msg)
         self.update_robot_state(conf.ROBOT_STATE_RUN)        
         return
     
     def robot_cmds__homing__callback(self, msg):
-        self.robot_actions__homing__pub.publish(msg)
+        self.ll_robot_cmds__homing__pub.publish(msg)
         self.robot.update_robot_position(conf.pos_home)
         self.update_robot_state(conf.ROBOT_STATE_RUN)
         return
@@ -166,10 +166,10 @@ class RobotController(Node):
     #                                                                                 #
     ###################################################################################
 
-    def robot_actions__move__joint_trajectory_viz__publish(self, np_array):
+    def ll_robot_cmds__move__joint_trajectory_viz__publish(self, np_array):
         return
 
-    def robot_actions__move__joint_trajectory__publish(self, joint_trajectory):
+    def ll_robot_cmds__move__joint_trajectory__publish(self, joint_trajectory):
         msg_out = JointTrajectoryArray()
         msg_out.array_size = len(joint_trajectory)
 
@@ -185,7 +185,7 @@ class RobotController(Node):
             msg_out.via_points.append(joint_via_point_msg)
 
         ## publish joint trajectory
-        self.robot_actions__move__joint_trajectory__pub.publish(msg_out)
+        self.ll_robot_cmds__move__joint_trajectory__pub.publish(msg_out)
         return
     
     def robot_state__publish(self, state):

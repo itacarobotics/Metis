@@ -8,8 +8,8 @@
 #include "error_log/error_log.h"
 #include "uros_publishers/uros_publishers.h"
 
-void robot_actions__move__joint_trajectory__callback(const void* msgin);
-void robot_actions__gripper__em__callback(const void* msgin);
-void robot_actions__homing__callback(const void* msgin);
+void ll_robot_cmds__move__joint_trajectory__callback(const void* msgin);
+void ll_robot_cmds__gripper__em__callback(const void* msgin);
+void ll_robot_cmds__homing__callback(const void* msgin);
 
 #endif  // CALLBACK_FUNCTIONS_H
