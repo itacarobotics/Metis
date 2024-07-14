@@ -9,7 +9,7 @@ from deltarobot import configuration as conf
 from deltarobot_interfaces.msg import TrajectoryTask
 from std_msgs.msg import String
 from std_msgs.msg import Bool
-from std_msgs.msg import Int32
+from std_msgs.msg import Int16
 
 
 class Task():
@@ -46,10 +46,10 @@ class TaskScheduler(Node):
             1)
 
         
-        self.task_queue_len__pub = self.create_publisher(
-            Int32,
-            'task_queue_len',
-            1)
+        self.task_scheduler_queue_len__pub = self.create_publisher(
+            Int16,
+            'task_scheduler_queue_len',
+            10)
 
         #**********************************************************#
         #                     define subscribers                   #
@@ -181,6 +181,11 @@ class TaskScheduler(Node):
             
             # remove task from list
             self.task_queue_list.pop(0)
+
+            # publish task queue length
+            msg = Int16()
+            msg.data = len(self.task_queue_list)
+            self.task_scheduler_queue_len__pub.publish(msg)
 
             # avoid new tasks beeing published
             self.pub_task_lock = True
