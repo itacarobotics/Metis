@@ -22,14 +22,23 @@ marker0_y = -25
 ## boxes
 box0_x = 37.5
 box0_y = 75
-box0_z = -170
+box0_z = -160
 
 box1_x = -37.5
 box1_y = 75
-box1_z = -170
+box1_z = -160
+
+trash_x = 0
+trash_y = 140
+trash_z = -160
 
 
 ## idle position
 idle_pos_x = 0
 idle_pos_y = 50
 idle_pos_z = -150
+
+## washers types
+measurement_variance = 0.1
+washer0_diameter = 16
+washer1_diameter = 24.5

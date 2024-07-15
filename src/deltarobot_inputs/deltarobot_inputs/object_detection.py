@@ -52,7 +52,7 @@ class ObjectDetection(Node):
         self.current_frame = None
 
 
-        timer_period = 0.1 # seconds
+        timer_period = 0.3 # seconds
         self.detect_objects_timer = self.create_timer(
             timer_period,
             self.detect_objects__timer_callback)
@@ -113,8 +113,6 @@ class ObjectDetection(Node):
             ## create motion planning
             program = self.get_motion_planning_program(washer_position_list)
 
-            print(program)
-
             ## publish gcode cmds
             self.input_gcode_cmds__publish(program)
 
@@ -141,7 +139,6 @@ class ObjectDetection(Node):
             msg.data = task
 
             self.input_gcode_cmds__pub.publish(msg)
-            print(task)
 
         return
 
@@ -229,27 +226,30 @@ class ObjectDetection(Node):
                            [0,                  cv_conf.WS_HEIGHT],
                            [cv_conf.WS_LENGTH,  cv_conf.WS_HEIGHT]])
 
-        # extract x,y coordinates of detected markers
-        for id in ids:
-            id = id[0]
+        ## compute center point of the four edges
+        cg_x = 0
+        cg_y = 0
+        for id in range(4): # loop through all ids
+            x = corners[id][0][0][0]
+            y = corners[id][0][0][1]
 
-## ********  !! check if this chunk can be removed !! ********
-            if id == 0:
-                corners_id = 2
-            elif id == 1:
-                corners_id = 3
-            elif id == 2:
-                corners_id = 0
-            elif id == 3:
-                corners_id = 1
-            else:
-                return None
-## ***********************************************************
+            cg_x += x*0.25
+            cg_y += y*0.25
 
-            x = corners[corners_id][0][0][0]
-            y = corners[corners_id][0][0][1]
 
-            pts1[id,:] = np.float32([x,y])
+        # extract x,y coordinates of detected markers and order points
+        for id in range(4): # loop through all ids
+            x = corners[id][0][0][0]
+            y = corners[id][0][0][1]
+
+            if x < cg_x and y < cg_y:
+                pts1[0,:] = np.float32([x,y])
+            elif x > cg_x and y < cg_y:
+                pts1[1,:] = np.float32([x,y])
+            elif x < cg_x and y > cg_y:
+                pts1[2,:] = np.float32([x,y])
+            elif x > cg_x and y > cg_y:
+                pts1[3,:] = np.float32([x,y])
 
         M = cv.getPerspectiveTransform(pts1, pts2)
         dst = cv.warpPerspective(img, M, (cv_conf.WS_LENGTH, cv_conf.WS_HEIGHT))
@@ -281,7 +281,7 @@ class ObjectDetection(Node):
                 continue
 
             perimeter = cv.arcLength(contour, True)
-            diameter = perimeter / np.pi
+            diameter = (perimeter / np.pi)/cv_conf.img_dst_prescaler
             circularity = 4 * np.pi * area / (perimeter * perimeter)
 
             if circularity > 0.85:  # adjust circularity threshold as needed
@@ -309,25 +309,29 @@ class ObjectDetection(Node):
                 diameter = washer_pos[2]
                 circularity = washer_pos[3]
                 
-                self.get_logger().info("***** objects detected at: *****")
-                self.get_logger().info(f"x: {x}, y: {y}")
+                # self.get_logger().info("***** objects detected at: *****")
+                # self.get_logger().info(f"x: {x}, y: {y}")
 
                 img = cv.rectangle(img, 
-                                   pt1=(int(x-diameter/2), int(y-diameter/2)), 
-                                   pt2=(int(x+diameter/2), int(y+diameter/2)), 
+                                   pt1=(int(x-diameter*cv_conf.img_dst_prescaler/2), 
+                                        int(y-diameter*cv_conf.img_dst_prescaler/2)), 
+                                   pt2=(int(x+diameter*cv_conf.img_dst_prescaler/2),
+                                        int(y+diameter*cv_conf.img_dst_prescaler/2)), 
                                    color=(0, 255, 0), 
                                    thickness=2)
                 img = cv.putText(img,
                                  text=f"certainty: {round(circularity*100 ,1)}%", 
-                                 org=(int(x+diameter/2), int(y-diameter/2+20)),
+                                 org=(int(x+diameter*cv_conf.img_dst_prescaler/2),
+                                      int(y-diameter*cv_conf.img_dst_prescaler/2+20)),
                                  fontFace=1,
                                  fontScale=1,
                                  color=(0, 0, 255),
                                  thickness=1,
                                  lineType=2)
                 img = cv.putText(img,
-                                 text=f"diameter: {round(diameter / cv_conf.img_dst_prescaler ,0)}", 
-                                 org=(int(x+diameter/2), int(y-diameter/2)),
+                                 text=f"diameter: {round(diameter, 1)}", 
+                                 org=(int(x+diameter*cv_conf.img_dst_prescaler/2),
+                                      int(y-diameter*cv_conf.img_dst_prescaler/2)),
                                  fontFace=1,
                                  fontScale=1,
                                  color=(0, 0, 255),
@@ -355,8 +359,9 @@ class ObjectDetection(Node):
         cmd = ""
 
         for object_pos in object_pos_list:
-
-            self.get_logger().info(f"************** {object_pos} **************")
+            diameter = object_pos[2]
+            min_diameter = diameter*(1-cv_conf.measurement_variance)
+            max_diameter = diameter*(1+cv_conf.measurement_variance)
 
             ## *********  pick object **********
             # go over object
@@ -382,10 +387,21 @@ class ObjectDetection(Node):
 
 
             ## *********  place object **********
-            # go to box0
-            x = cv_conf.box0_x
-            y = cv_conf.box0_y
-            z = cv_conf.box0_z
+            print(f"min dim: {min_diameter}, max dim: {max_diameter}")
+            if cv_conf.washer0_diameter > min_diameter and cv_conf.washer0_diameter < max_diameter:
+                x = cv_conf.box0_x
+                y = cv_conf.box0_y
+                z = cv_conf.box0_z
+            elif cv_conf.washer1_diameter > min_diameter and cv_conf.washer1_diameter < max_diameter:
+                x = cv_conf.box1_x
+                y = cv_conf.box1_y
+                z = cv_conf.box1_z
+            else:
+                x = cv_conf.trash_x
+                y = cv_conf.trash_y
+                z = cv_conf.trash_z
+
+            # go to box
             cmd = f"G01 X{x} Y{y} Z{z} T{-1}"
             motion_planning_program.append(cmd)
 
@@ -393,20 +409,10 @@ class ObjectDetection(Node):
             cmd = f"M05"
             motion_planning_program.append(cmd)
 
-            # go over box0
-            x = cv_conf.box0_x
-            y = cv_conf.box0_y
-            z = cv_conf.box0_z + cv_conf.z_offset
+            # go over box
+            z += cv_conf.z_offset
             cmd = f"G01 X{x} Y{y} Z{z} T{-1}"
             motion_planning_program.append(cmd)
-
-
-        # ## return to idle position
-        #     x = cv_conf.idle_pos_x
-        #     y = cv_conf.idle_pos_y
-        #     z = cv_conf.idle_pos_z
-        #     cmd = f"G01 X{x} Y{y} Z{z} T{-1}"
-        #     motion_planning_program.append(cmd)
 
         return motion_planning_program
 
