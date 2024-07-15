@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             "gui_node = deltarobot_inputs.gui:main",
+            "object_detection_node = deltarobot_inputs.object_detection:main",
             "gcode_parser_node = deltarobot_inputs.gcode_parser:main",
             "gamepad_controller_node = deltarobot_inputs.gamepad_controller:main",
         ],

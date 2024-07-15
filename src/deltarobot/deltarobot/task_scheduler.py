@@ -49,7 +49,7 @@ class TaskScheduler(Node):
         self.task_scheduler_queue_len__pub = self.create_publisher(
             Int16,
             'task_scheduler_queue_len',
-            10)
+            1)
 
         #**********************************************************#
         #                     define subscribers                   #
@@ -162,6 +162,7 @@ class TaskScheduler(Node):
     ###################################################################################
 
     def task_publisher__timer_callback(self):
+
         # check if robot is ready to handle new task
         if self.pub_task_lock == False and len(self.task_queue_list) > 0:
             ## publish message
@@ -182,14 +183,14 @@ class TaskScheduler(Node):
             # remove task from list
             self.task_queue_list.pop(0)
 
-            # publish task queue length
-            msg = Int16()
-            msg.data = len(self.task_queue_list)
-            self.task_scheduler_queue_len__pub.publish(msg)
-
             # avoid new tasks beeing published
             self.pub_task_lock = True
 
+
+        # publish task queue length
+        msg = Int16()
+        msg.data = len(self.task_queue_list)
+        self.task_scheduler_queue_len__pub.publish(msg)
         return
 
 

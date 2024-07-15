@@ -13,10 +13,10 @@ q_min = 0     # [ mm ]
 q_max = 500     # [ mm ]
 
 ## trajectory limits
-max_vel                 = 7500   # [ mm/s ]
-max_acc                 = 1000   # [ mm/s2 ]
-via_points_distance     = 2.6     # [ mm ]
-via_points_threshold    = 10    # [ mm ]
+max_vel                 = 6000   # [ mm/s ]
+max_acc                 = 1200   # [ mm/s2 ]
+via_points_distance     = 1.5     # [ mm ]
+via_points_threshold    = 2    # [ mm ]
 
 ## physical properties
 # link_length = 400     --> set in deltarobot_description
