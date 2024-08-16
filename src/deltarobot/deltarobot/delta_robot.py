@@ -25,6 +25,7 @@ class DeltaRobot():
         ## define joint limits
         self.q_min  = conf.q_min
         self.q_max  = conf.q_max
+        self.z_min  = conf.z_min
 
         ## init joints
         self.q1 = np.zeros(3)
@@ -65,6 +66,9 @@ class DeltaRobot():
     ###################################################################################
 
     def generate_joint_trajectory__task_space__ptp(self, pos_end, time_total):
+        if pos_end[2] <= self.z_min:
+            return None
+        
         ## get task space trajectory
         via_points_trajectory = self.tg.task_space__ptp(self.pos_current, pos_end, time_total)
 

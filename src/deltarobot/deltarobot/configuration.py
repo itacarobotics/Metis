@@ -9,12 +9,13 @@ ws_path = "/home/ostifede02/itacarobotics/Metis"
 pos_home = np.array([0, 0, -45])
 
 ## joint limits
-q_min = 0     # [ mm ]
-q_max = 500     # [ mm ]
+q_min = 0       # [ mm ]
+q_max = 394     # [ mm ]
+z_min = -210    # [ mm ]
 
 ## trajectory limits
 max_vel                 = 5000   # [ mm/s ]
-max_acc                 = 1200   # [ mm/s2 ]
+max_acc                 = 1000   # [ mm/s2 ]
 via_points_distance     = 2     # [ mm ]
 via_points_threshold    = 2    # [ mm ]
 

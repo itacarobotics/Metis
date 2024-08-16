@@ -52,7 +52,7 @@ class ObjectDetection(Node):
         self.current_frame = None
 
 
-        timer_period = 0.3 # seconds
+        timer_period = 0.2 # seconds
         self.detect_objects_timer = self.create_timer(
             timer_period,
             self.detect_objects__timer_callback)
@@ -64,12 +64,12 @@ class ObjectDetection(Node):
         self.aruco_dict = cv.aruco.getPredefinedDictionary(cv.aruco.DICT_4X4_50)
 
         ## go to home before starting (for safety)
-        time.sleep(0.01)
+        time.sleep(0.02)
         init_msg = String()
         init_msg.data = "G28"
         self.input_gcode_cmds__pub.publish(init_msg)
 
-        time.sleep(0.01)
+        time.sleep(0.02)
         init_msg = String()
         init_msg.data = "G01 X0 Y50 Z-120 T5"
         self.input_gcode_cmds__pub.publish(init_msg)
@@ -179,6 +179,7 @@ class ObjectDetection(Node):
         ## detect markers
         corners, ids = self.detect_markers(img)
         if corners is None:
+            self.get_logger().warning("Markers not detected")
             return None
 
         ## transform image
@@ -189,6 +190,7 @@ class ObjectDetection(Node):
         ## detect circles
         washer_position_list = self.detect_circles(img_dst)
         if washer_position_list is None:
+            self.get_logger().warning("Washers not detected")
             return None
 
         return washer_position_list
@@ -204,10 +206,9 @@ class ObjectDetection(Node):
             return None, None
 
         if len(ids) != 4:   ## not all four markers have been detected
-            self.get_logger().warning("Markers not detected")
             return None, None
         
-
+        print("detecting markers")
         ## *****************  mark detected markers  ***************************
         if cv_conf.SHOW_MARKERS:
             img_marker = cv.aruco.drawDetectedMarkers(img, corners, ids)
@@ -265,7 +266,7 @@ class ObjectDetection(Node):
         # Find contours in the edge-detected image
         contours, _ = cv.findContours(edges, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 
-        ## from experiment to dect a washer
+        ## from experiment to detect a washer
         total_area = len(img[0])*len(img)
         min_area = 0.005*total_area
         max_area = 0.05*total_area
@@ -432,8 +433,9 @@ def main(args=None):
 
     object_detection_node = ObjectDetection()
     
-    CAMERA_IP_ADDRESS = "http://192.168.1.186:4747/video"
-    # CAMERA_IP_ADDRESS = "http://10.42.0.13:4747/video"
+    # CAMERA_IP_ADDRESS = "http://192.168.1.186:4747/video"
+    CAMERA_IP_ADDRESS = "http://10.42.0.13:4747/video"
+
     connection_ack = object_detection_node.init_IP_camera(CAMERA_IP_ADDRESS)
 
     if not connection_ack:
