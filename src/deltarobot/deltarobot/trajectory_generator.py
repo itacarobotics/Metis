@@ -66,7 +66,7 @@ class TrajectoryGenerator():
     def get_feasible_time_acc_constrained(self, q_0, q_f):
         T = (np.sqrt(10)*np.sqrt(q_f-q_0)) / (pow(3, 0.25)*np.sqrt(self.max_acc))
         return T
-    
+
     def is_time_feasable(self, T, path_length):
         # get T that does not exceed velocity and acceleration limits
         T_constrained = max(
